@@ -4,10 +4,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 
 
 public class MainTest {
@@ -62,10 +65,10 @@ public class MainTest {
   }
 
   @Test(dependsOnMethods = {"shouldLogin"})
-  public void shouldCreateEmail () throws InterruptedException {
-    Thread.sleep(2000);
+  public void shouldCreateEmail () {
+    (new WebDriverWait(driver,10)).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(MAIL_CREATE)));
     driver.findElement(By.cssSelector(MAIL_CREATE)).click();
-    Thread.sleep(2000);
+    (new WebDriverWait(driver,10)).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(ELEMENT_MAIL_ADDRESS)));
     driver.findElement(By.cssSelector(ELEMENT_MAIL_ADDRESS)).sendKeys(ADDRESS);
     driver.findElement(By.cssSelector(ELEMENT_MAIL_SUBJECT)).sendKeys(SUBJECT);
     driver.findElement(By.cssSelector(ELEMENT_MAIL_BODY)).sendKeys(BODY);
@@ -75,12 +78,12 @@ public class MainTest {
   }
 
   @Test(dependsOnMethods = {"shouldCreateEmail"})
-  public void shouldFindCreatedEmail () throws InterruptedException {
+  public void shouldFindCreatedEmail () {
     driver.findElement(By.xpath(ELEMENT_DRAFT_TAB)).click();
     driver.navigate().refresh();
-    Thread.sleep(4000);
+    (new WebDriverWait(driver,10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(ADDRESS_XPATH)));
     driver.findElement(By.xpath(ADDRESS_XPATH)).click();
-    Thread.sleep(2000);
+    (new WebDriverWait(driver,10)).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(DRAFT_MAIL_ADDRESS)));
     String actualAddress = driver.findElement(By.cssSelector(DRAFT_MAIL_ADDRESS)).getAttribute(DRAFT_MAIL_ADDRESS_ATTRIBUTE);
     String actualSubject = driver.findElement(By.cssSelector(ELEMENT_MAIL_SUBJECT)).getAttribute(DRAFT_MAIL_ATTRIBUTE);
 
@@ -93,17 +96,16 @@ public class MainTest {
   }
 
   @Test(dependsOnMethods = {"shouldSendEmail"}, expectedExceptions = NoSuchElementException.class)
-  public void shouldEmailRemovedFromDrafts () throws InterruptedException {
-    Thread.sleep(5000);
-    driver.findElement(By.xpath(ADDRESS_XPATH));
+  public void shouldEmailRemovedFromDrafts()  {
+      driver.findElement(By.xpath(ADDRESS_XPATH));
   }
 
   @Test(dependsOnMethods = {"shouldEmailRemovedFromDrafts"})
-  public void shouldEmailAppearedInSend () throws InterruptedException {
+  public void shouldEmailAppearedInSend () {
     driver.findElement(By.xpath(ELEMENT_SEND_TAB)).click();
-    Thread.sleep(2000);
+    (new WebDriverWait(driver,10)).until(ExpectedConditions.presenceOfElementLocated(By.xpath(ADDRESS_XPATH)));
     driver.findElement(By.xpath(ADDRESS_XPATH)).click();
-    Thread.sleep(2000);
+    (new WebDriverWait(driver,10)).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(ELEMENT_SEND_MAIL_ADDRESS)));
     String actualAddress = driver.findElement(By.cssSelector(ELEMENT_SEND_MAIL_ADDRESS)).getAttribute(SEND_MAIL_ADDRESS_ATTRIBUTE);
 
     Assert.assertTrue(ADDRESS.equals(actualAddress) && driver.getPageSource().contains(SUBJECT) && driver.getPageSource().contains(BODY));
