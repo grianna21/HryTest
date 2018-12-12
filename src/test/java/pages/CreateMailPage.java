@@ -36,7 +36,7 @@ public class CreateMailPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void createClick() {
+    public void create() {
         wait.until(ExpectedConditions.visibilityOf(createButton));
         createButton.click();
     }
@@ -53,11 +53,11 @@ public class CreateMailPage {
         mailBody.sendKeys(mailBodyValue);
     }
 
-    public void closeClick () {
+    public void close() {
         closeButton.click();
     }
 
-    public void saveClick () {
+    public void save() {
         saveButton.click();
     }
     }

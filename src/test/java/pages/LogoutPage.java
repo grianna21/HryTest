@@ -19,11 +19,11 @@ public class LogoutPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void logoutMenuClick () {
+    public void openTab() {
         logout.click();
     }
 
-    public void logoutButtonClick () {
+    public void logOut() {
         logoutButton.click();
     }
 

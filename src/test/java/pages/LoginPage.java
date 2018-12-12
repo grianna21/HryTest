@@ -31,7 +31,7 @@ public class LoginPage {
         password.sendKeys(passwordValue);
     }
 
-    public void submitClick(){
+    public void submit(){
         submitButton.submit();
     }
 

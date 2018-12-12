@@ -27,7 +27,7 @@ public class SendListPage {
         PageFactory.initElements(driver, this);
     }
 
-    public void openSendTab() {
+    public void openTab() {
         sendTab.click();
     }
 
