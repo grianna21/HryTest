@@ -26,4 +26,8 @@ public class LogoutPage {
     public void logoutButtonClick () {
         logoutButton.click();
     }
+
+    public String getTitle(){
+        return webDriver.getTitle();
+    }
 }

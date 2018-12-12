@@ -7,7 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SendPage {
+public class SendListPage {
 
     private WebDriver webDriver;
     private WebDriverWait wait;
@@ -21,16 +21,17 @@ public class SendPage {
     @FindBy(css="div[class='mail-User mail-User_small js-contact-actions-dropdown js-email']")
     private WebElement sendMailAddress;
 
-    public SendPage (WebDriver driver) {
+    public SendListPage(WebDriver driver) {
         this.webDriver = driver;
         this.wait = new WebDriverWait(webDriver, 10);
         PageFactory.initElements(driver, this);
     }
 
-    public void sendTabClick () {
+    public void openSendTab() {
         sendTab.click();
     }
-    public void addressClick () {
+
+    public void findByAddress() {
         wait.until(ExpectedConditions.visibilityOf(address));
         address.click();
 

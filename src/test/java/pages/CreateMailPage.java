@@ -1,6 +1,5 @@
 package pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,10 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CreatePage {
+public class CreateMailPage {
 
     private WebDriver webDriver;
-
     private WebDriverWait wait;
 
     @FindBy(css="span[class='mail-ComposeButton-Text']")
@@ -32,7 +30,7 @@ public class CreatePage {
     @FindBy(css="button[class=' nb-button _nb-small-action-button _init nb-with-s-right-gap js-resolve']")
     private WebElement saveButton;
 
-    public CreatePage(WebDriver driver) {
+    public CreateMailPage(WebDriver driver) {
         this.webDriver = driver;
         this.wait = new WebDriverWait(webDriver,10);
         PageFactory.initElements(driver, this);
