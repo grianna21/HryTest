@@ -3,6 +3,7 @@ package mail;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -25,6 +26,7 @@ public class MainTest {
     private static final String EXPECTED_LOGOUT_TITLE = "Яндекс.Паспорт";
 
     private WebDriver driver;
+    private WebDriverWait wait;
 
     @BeforeClass
     public void setUp() {
@@ -32,27 +34,23 @@ public class MainTest {
         driver = new ChromeDriver();
         driver.manage().timeouts().pageLoadTimeout(30, TimeUnit.SECONDS);
         driver.get(URL);
+        wait = new WebDriverWait(driver,10);
     }
 
     @Test
     public void shouldLogin() {
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.setLogin(USERNAME_VALUE);
-        loginPage.setPassword(PASSWORD_VALUE);
-        loginPage.submitClick();
-
-        Assert.assertEquals(loginPage.getTitle(), EXPECTED_TITLE);
+        Assert.assertEquals(new LoginPage(driver, wait, USERNAME_VALUE, PASSWORD_VALUE).login().getTitle(), EXPECTED_TITLE);
     }
 
     @Test(dependsOnMethods = {"shouldLogin"})
     public void shouldCreateEmail() {
-        CreateMailPage createPage = new CreateMailPage(driver);
-        createPage.createClick();
+        CreateMailPage createPage = new CreateMailPage(driver, wait);
+        createPage.create();
         createPage.setAddress(ADDRESS);
         createPage.setMailSubject(SUBJECT);
         createPage.setMailBody(BODY);
-        createPage.closeClick();
-        createPage.saveClick();
+        createPage.close();
+        createPage.save();
     }
 
     @Test(dependsOnMethods = {"shouldCreateEmail"})
@@ -82,7 +80,7 @@ public class MainTest {
     @Test(dependsOnMethods = {"shouldEmailRemovedFromDrafts"})
     public void shouldEmailAppearedInSend() {
         SendListPage sendListPage = new SendListPage(driver);
-        sendListPage.openSendTab();
+        sendListPage.openTab();
         sendListPage.findByAddress();
 
         SendMailPage sendPage = new SendMailPage(driver);
@@ -93,8 +91,8 @@ public class MainTest {
     @Test(dependsOnMethods = {"shouldEmailAppearedInSend"})
     public void shouldLogOut() {
         LogoutPage logoutPage = new LogoutPage(driver);
-        logoutPage.logoutMenuClick();
-        logoutPage.logoutButtonClick();
+        logoutPage.openTab();
+        logoutPage.logOut();
 
         Assert.assertEquals(logoutPage.getTitle(), EXPECTED_LOGOUT_TITLE);
     }

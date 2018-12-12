@@ -4,10 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class LoginPage {
-
-    private WebDriver webDriver;
+public class LoginPage extends Page {
 
     @FindBy(id="Username")
     private WebElement login;
@@ -18,24 +17,15 @@ public class LoginPage {
     @FindBy(css="input[class='button loginButton gradientforbutton']")
     private WebElement submitButton;
 
-    public LoginPage(WebDriver driver){
-        this.webDriver = driver;
+    public LoginPage(WebDriver driver, WebDriverWait wait, String login, String password){
+        super(driver, wait);
         PageFactory.initElements(driver, this);
+        this.login.sendKeys(login);
+        this.password.sendKeys(password);
     }
 
-    public void setLogin(String loginValue){
-        login.sendKeys(loginValue);
-    }
-
-    public void setPassword(String passwordValue){
-        password.sendKeys(passwordValue);
-    }
-
-    public void submit(){
+    public CreateMailPage login(){
         submitButton.submit();
-    }
-
-    public String getTitle(){
-        return webDriver.getTitle();
+        return new CreateMailPage(getWebDriver(), getWait());
     }
 }

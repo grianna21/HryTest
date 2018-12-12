@@ -7,10 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CreateMailPage {
-
-    private WebDriver webDriver;
-    private WebDriverWait wait;
+public class CreateMailPage extends Page {
 
     @FindBy(css="span[class='mail-ComposeButton-Text']")
     private WebElement createButton;
@@ -30,18 +27,17 @@ public class CreateMailPage {
     @FindBy(css="button[class=' nb-button _nb-small-action-button _init nb-with-s-right-gap js-resolve']")
     private WebElement saveButton;
 
-    public CreateMailPage(WebDriver driver) {
-        this.webDriver = driver;
-        this.wait = new WebDriverWait(webDriver,10);
+    public CreateMailPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
         PageFactory.initElements(driver, this);
     }
 
     public void create() {
-        wait.until(ExpectedConditions.visibilityOf(createButton));
+        getWait().until(ExpectedConditions.visibilityOf(createButton));
         createButton.click();
     }
     public void setAddress(String mailAddressValue){
-        wait.until(ExpectedConditions.visibilityOf(mailAddress));
+        getWait().until(ExpectedConditions.visibilityOf(mailAddress));
         mailAddress.sendKeys(mailAddressValue);
     }
 
@@ -59,6 +55,10 @@ public class CreateMailPage {
 
     public void save() {
         saveButton.click();
+    }
+
+    public String getTitle(){
+        return getWebDriver().getTitle();
     }
     }
 
